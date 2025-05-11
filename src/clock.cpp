@@ -13,6 +13,10 @@ int Clock::get_minute() const {
     return minute;
 }
 
+int Clock::get_total_time() const {
+    return total_time;
+}
+
 void Clock::set_hour(int h) {
     hour = h;
 }
@@ -25,6 +29,8 @@ void Clock::operator++() {
     if(minute < 59) minute++;
     else if(hour < 23) { hour++; minute = 0; }
     else { hour = 0; minute = 0; }
+
+    total_time++;
 }
 
 

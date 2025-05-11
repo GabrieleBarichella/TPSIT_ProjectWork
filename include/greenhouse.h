@@ -7,9 +7,10 @@
 
 class Greenhouse {
 private:
-    std::list<Implant*> implants;
     Clock clock;
 public:
+    std::list<Implant*> implants;
+
     void add_implant(Implant* implant);
     void remove_implant(Implant* implant);
 
