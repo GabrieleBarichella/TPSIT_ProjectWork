@@ -10,6 +10,7 @@ public:
     int get_minute() const;
     void set_hour(int h);
     void set_minute(int m);
+    void operator++();
 
     Clock();
 };
