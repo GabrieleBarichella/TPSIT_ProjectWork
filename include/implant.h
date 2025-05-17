@@ -6,20 +6,16 @@
 
 class Implant {
 protected:
+    std::string plant_name;
     bool active = false;
     bool automatic = false;
+    int frequency;
+    int duration;
+    double temperature;
 
-    int frequency = 0;
-    int duration = 0;
     Clock last_activation;
-
-    std::string plant_name;
-    int id;
-    double water_usage = 0;
-
     Clock timer_start;
     Clock timer_stop;
-    bool timer_enabled = false;
 
 public:
     Implant(const std::string& name, int id, bool is_automatic, int freq, int dur);
@@ -27,20 +23,24 @@ public:
     virtual ~Implant() = default;
 
     virtual void update(const Clock& current_time) = 0;
-    virtual void turnOn(const Clock& current_time) = 0;
-    virtual void turnOff(const Clock& current_time) = 0;
+    virtual void turn_on(const Clock& current_time) = 0;
+    virtual void turn_off(const Clock& current_time) = 0;
+    virtual void print_status() const = 0;
 
-    virtual void printStatus() const = 0;
+    void set_timer(const Clock& start, const Clock& stop);
+    void set_active(bool status);
+    void remove_timer();
+    bool has_timer() const;
+    std::string get_plant_name() const;
+    bool is_active() const;
+    bool is_automatic() const;
 
-    void setTimer(const Clock& start, const Clock& stop);
-    void removeTimer();
-    bool hasTimer() const;
+    void activate();
+    void deactivate();
 
-    std::string getPlantName() const;
-    int getID() const;
-    bool isActive() const;
-    bool isAutomatic() const;
-    double getWaterUsage() const;
+    Clock get_last_activation();
+    Clock get_timer_start();
+    Clock get_timer_stop();
 };
 
 #endif
