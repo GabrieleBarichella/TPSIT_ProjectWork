@@ -13,7 +13,7 @@ public:
     int get_total_time() const;
     void set_hour(int h);
     void set_minute(int m);
-    std::string tostring();
+    std::string tostring() const;
     Clock operator++(int);
 
     Clock();

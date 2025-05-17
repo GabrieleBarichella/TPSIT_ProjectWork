@@ -20,5 +20,4 @@ add_executable(TPSIT_ProjectWork main.cpp
         src/desertic.cpp
         src/mediterranean.cpp
         src/tropical.cpp
-        include/inputSystem.h
-        src/inputSystem.cpp)
+)

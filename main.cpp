@@ -1,5 +1,6 @@
 #include <iostream>
 #include "include/greenhouse.h"
+#include <string>
 
 void PrintMenu();
 void CreationSystem();
@@ -58,8 +59,5 @@ void CreationSystem() {
 
 void Simulation() {
     std::string inputCommand;
-
-    //Mancante: codice di Maniglio per l'ingresso dei comandi
-
-    std::string parsedCommand; //Placeholder
+    greenhouse.commandParser(inputCommand);
 }

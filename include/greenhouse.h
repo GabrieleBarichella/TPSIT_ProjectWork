@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-
+#include <sstream>
+#include <stdexcept>
 #include "clock.h"
 #include "implant.h"
 
@@ -23,6 +24,10 @@ public:
     void reset_time();
     void reset_timers();
     void reset_all();
+
+    void logMessage(const Clock &time, const std::string &message, const int &errorLevel);
+    std::vector<std::string> commandParser(const std::string &command);
+    void processCommand(const std::string &command);
 
     Greenhouse();
 };

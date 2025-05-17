@@ -25,7 +25,7 @@ void Clock::set_minute(int m) {
     minute = m;
 }
 
-std::string Clock::tostring() {
+std::string Clock::tostring() const {
     return std::to_string(hour) + ":" + std::to_string(minute);
 }
 
