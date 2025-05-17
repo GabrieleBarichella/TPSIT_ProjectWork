@@ -1,5 +1,6 @@
 #ifndef CLOCK_H
 #define CLOCK_H
+#include <string>
 
 class Clock {
 private:
@@ -12,6 +13,7 @@ public:
     int get_total_time() const;
     void set_hour(int h);
     void set_minute(int m);
+    std::string tostring();
     Clock operator++(int);
 
     Clock();

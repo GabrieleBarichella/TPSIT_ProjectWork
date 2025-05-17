@@ -14,24 +14,16 @@ void Implant::set_active(bool status) {
     active = status;
 }
 
-void Implant::remove_timer() {
-
-};
-
-bool Implant::has_timer() const {
-
-};
-
 std::string Implant::get_plant_name() const {
-
+    return plant_name;
 };
 
 bool Implant::is_active() const {
-
+    return active;
 };
 
 bool Implant::is_automatic() const {
-
+    return automatic;
 };
 
 void Implant::activate() {

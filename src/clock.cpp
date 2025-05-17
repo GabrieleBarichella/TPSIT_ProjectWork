@@ -25,6 +25,10 @@ void Clock::set_minute(int m) {
     minute = m;
 }
 
+std::string Clock::tostring() {
+    return std::to_string(hour) + ":" + std::to_string(minute);
+}
+
 Clock Clock::operator++(int) {
     if(minute < 59) minute++;
     else if(hour < 23) { hour++; minute = 0; }

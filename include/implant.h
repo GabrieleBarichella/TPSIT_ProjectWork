@@ -29,8 +29,6 @@ public:
 
     void set_timer(const Clock& start, const Clock& stop);
     void set_active(bool status);
-    void remove_timer();
-    bool has_timer() const;
     std::string get_plant_name() const;
     bool is_active() const;
     bool is_automatic() const;
