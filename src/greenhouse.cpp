@@ -1,10 +1,6 @@
 #include "../include/greenhouse.h"
 #include <iostream>
 
-Greenhouse::Greenhouse() {
-
-}
-
 void Greenhouse::add_implant(Implant* implant) {
     implants.push_back(implant);
 };
@@ -33,8 +29,21 @@ void Greenhouse::set_implant_timers(std::string name, Clock start, Clock stop) {
             implants.at(i)->set_timer(start,stop);
 };
 
-void Greenhouse::show() {
+void Greenhouse::set_implant_timers(std::string name, Clock start) {
+    for(int i = 0; i < implants.size(); i++)
+        if(implants.at(i)->get_plant_name() == name)
+            implants.at(i)->set_timer(start);
+}
 
+void Greenhouse::show(std::string name) {
+    for(int i = 0; i < implants.size(); i++)
+        if(implants.at(i)->get_plant_name() == name)
+            logMessage(clock, implants.at(i)->get_all_infos(), 0);
+};
+
+void Greenhouse::show() {
+    for(int i = 0; i < implants.size(); i++)
+        logMessage(clock, implants.at(i)->get_all_infos(), 0);
 };
 
 void Greenhouse::set_time(Clock time) {
@@ -63,13 +72,23 @@ void Greenhouse::reset_all() {
 
 };
 
+void Greenhouse::remove_timer(std::string name) {
+    for(int i = 0; i < implants.size(); i++)
+        if(implants.at(i)->get_plant_name() == name) return;
+            //rimozione del timer (set timer -1)
+}
+
+Clock Greenhouse::get_clock() {
+    return clock;
+}
+
 /////////////////////////////////////////////////////////////
 
 void Greenhouse::logMessage(const Clock &time, const std::string &message, const int &errorLevel) {
     if (errorLevel == 0)
-        std::cout << "[" << time << "]\t" << message << std::endl;
+        std::cout << "[" << time.tostring() << "]\t" << message << std::endl;
     else if (errorLevel == 1)
-        std::cerr << "[" << time << "]\t" << message << std::endl;
+        std::cerr << "[" << time.tostring() << "]\t" << message << std::endl;
 }
 
 std::vector<std::string> Greenhouse::commandParser(const std::string &command) {
@@ -146,16 +165,16 @@ void Greenhouse::processCommand(const std::string &command) {
             const std::string &operation = tokens[2];
 
             if (operation == "on") {
-                //metodo per accendere il dispositivo {deviceName};
+                set_implant_on(deviceName);
             } else if (operation == "off") {
-                //metodo per spegnere il dispositivo {deviceName};
+                set_implant_off(deviceName);
             } else {
                 Clock start{operation};
                 if (tokens.size() == 4) {
                     Clock stop{tokens[3]};
-                    //metodo per settare il timer {start} e {stop} per il dispositivo {deviceName};
+                    set_implant_timers(deviceName, start, stop);
                 } else {
-                    //metodo per settare il timer {start} per il dispositivo {deviceName};
+                    set_implant_timers(deviceName, start);
                 }
 
             }
@@ -165,12 +184,12 @@ void Greenhouse::processCommand(const std::string &command) {
         if (tokens.size() != 2) {
             throw std::invalid_argument("Errore: comando 'rm' non valido. Usa: rm ${DEVICENAME}");
         }
-        //metodo per rimuovere il timer
+        remove_timer(tokens[1]);
     } else if (action == "show") {
         if (tokens.size() == 1) {
-        //metodo per mostrare tutti impianti
+        show();
         } else if (tokens.size() == 2) {
-            //metodo per mostrare impianto specifico
+            show(tokens[1]);
         } else {
             throw std::invalid_argument("Errore: comando 'show' non valido. Usa: show oppure show ${DEVICENAME}");
         }
@@ -182,11 +201,11 @@ void Greenhouse::processCommand(const std::string &command) {
 
         const std::string &resetType = tokens[1];
         if (resetType == "time") {
-            //metodo per resettare il tempo
+            reset_time();
         } else if (resetType == "timers") {
-            //metodo per resettare i timer
+            reset_timers();
         } else if (resetType == "all") {
-            //metodo per resettare tempo e timer
+            reset_all();
         } else {
             throw std::invalid_argument(
                     "Errore: opzione 'reset' non valida. Usa: reset time | reset timers | reset all");

@@ -4,7 +4,12 @@
 #include "implant.h"
 
 class Alpine : public Implant {
+public:
+    Alpine(const std::string& name);
 
+    void activate() override;
+    void deactivate() override;
+    std::string get_all_infos() override;
 };
 
 #endif

@@ -7,34 +7,29 @@
 class Implant {
 protected:
     std::string plant_name;
-    bool active = false;
-    bool automatic = false;
-    int frequency;
-    int duration;
-    double temperature;
+    bool active;
+    bool automatic;
 
     Clock last_activation;
     Clock timer_start;
     Clock timer_stop;
 
 public:
-    Implant(const std::string& name, int id, bool is_automatic, int freq, int dur);
+    Implant(const std::string& name);
 
     virtual ~Implant() = default;
 
-    virtual void update(const Clock& current_time) = 0;
-    virtual void turn_on(const Clock& current_time) = 0;
-    virtual void turn_off(const Clock& current_time) = 0;
-    virtual void print_status() const = 0;
+    virtual void activate() = 0;
+    virtual void deactivate() = 0;
+    virtual std::string get_all_infos() = 0;
 
     void set_timer(const Clock& start, const Clock& stop);
+    void set_timer(const Clock& start);
     void set_active(bool status);
+
     std::string get_plant_name() const;
     bool is_active() const;
     bool is_automatic() const;
-
-    void activate();
-    void deactivate();
 
     Clock get_last_activation();
     Clock get_timer_start();

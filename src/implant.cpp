@@ -1,13 +1,14 @@
 #include "../include/implant.h"
 
-Implant::Implant(const std::string& name, int id, bool is_automatic, int freq, int dur) {
-
-};
+Implant::Implant(const std::string& name) : plant_name(name) {}
 
 void Implant::set_timer(const Clock& start, const Clock& stop) {
     timer_start = start;
     timer_stop = stop;
-    automatic = true;
+}
+
+void Implant::set_timer(const Clock& start) {
+    timer_start = start;
 }
 
 void Implant::set_active(bool status) {
@@ -28,12 +29,18 @@ bool Implant::is_automatic() const {
 
 void Implant::activate() {
     active = true;
-    //stampa stato attivo, gestisci temperatura,
 };
 
 void Implant::deactivate() {
     active = false;
 };
+
+std::string Implant::get_all_infos() {
+    std::string infos[2];
+    infos[0] = active ? "Yes" : "No";
+    infos[1] = automatic ? "Yes" : "No";
+    return "Active: " + infos[0] + " - Automatic: " + infos[1];
+}
 
 Clock Implant::get_last_activation() {
     return last_activation;

@@ -4,7 +4,14 @@
 #include "implant.h"
 
 class Mediterranean : public Implant {
+private:
+    double temperature;
+public:
+    Mediterranean(const std::string &name);
 
+    void activate() override;
+    void deactivate() override;
+    std::string get_all_infos() override;
 };
 
 #endif

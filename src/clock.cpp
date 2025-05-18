@@ -25,6 +25,12 @@ void Clock::set_minute(int m) {
     minute = m;
 }
 
+void Clock::set_total_time(int t) {
+    total_time = t;
+    hour = total_time / 60;
+    minute = total_time % 60;
+}
+
 std::string Clock::tostring() const {
     return std::to_string(hour) + ":" + std::to_string(minute);
 }
