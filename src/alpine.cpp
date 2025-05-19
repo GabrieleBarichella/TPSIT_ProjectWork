@@ -5,16 +5,23 @@ Alpine::Alpine(const std::string& name) : Implant(name) {
     automatic = true;
 }
 
-void Alpine::activate() {
-    active = true;
-    //aggiorna last activation
+std::string Alpine::activate() override {
+    if(!active) {
+        active = true;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è attivato.";
+    }
+    return "";
 }
 
-void Alpine::deactivate() {
-    active = false;
-    //disattiva l'impianto
+std::string Alpine::deactivate() override {
+    if(active) {
+        active = false;
+        return "L'impianto " + plant_name + " si è disattivato.";
+    }
+    return "";
 }
 
-std::string Alpine::get_all_infos() {
+std::string Alpine::get_all_infos() override {
     return "Type: Alpine - Name: " + plant_name + " - Active: " + (active ? "Yes" : "No") + " -  Automatic: Yes";
 }

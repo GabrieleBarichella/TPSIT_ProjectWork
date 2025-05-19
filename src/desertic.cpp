@@ -5,14 +5,22 @@ Desertic::Desertic(const std::string& name) : Implant(name) {
     automatic = false;
 }
 
-void Desertic::activate() {
-    active = true;
-    //aggiorna last activation
+std::string Desertic::activate() override {
+    if(!active) {
+        active = true;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è attivato.";
+    }
+    return "";
 }
 
-void Desertic::deactivate() {
-    active = false;
-    //disattiva l'impianto
+std::string Desertic::deactivate() override {
+    if(active) {
+        active = false;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è disattivato.";
+    }
+    return "";
 }
 
 std::string Desertic::get_all_infos() {

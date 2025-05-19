@@ -6,14 +6,23 @@ Mediterranean::Mediterranean(const std::string& name) : Implant(name) {
     temperature = 28.00;
 }
 
-void Mediterranean::activate() {
-    active = true;
-    //aggiorna last activation
+std::string Mediterranean::activate() override {
+    std::string output = "";
+    if(!active) {
+        active = true;
+        //last_activation =
+        output += "L'impianto " + plant_name + " si è attivato.";
+    }
+    return output;
 }
 
-void Mediterranean::deactivate() {
-    active = false;
-    //disattiva l'impianto
+std::string Mediterranean::deactivate() override {
+    if(active) {
+        active = false;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è disattivato.";
+    }
+    return "";
 }
 
 std::string Mediterranean::get_all_infos() {

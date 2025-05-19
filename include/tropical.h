@@ -7,8 +7,8 @@ class Tropical : public Implant {
 public:
     Tropical(const std::string &name);
 
-    void activate() override;
-    void deactivate() override;
+    std::string activate() override;
+    std::string deactivate() override;
     std::string get_all_infos() override;
 };
 

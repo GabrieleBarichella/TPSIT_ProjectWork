@@ -5,14 +5,22 @@ Tropical::Tropical(const std::string& name) : Implant(name) {
     automatic = true;
 }
 
-void Tropical::activate() {
-    active = true;
-    //aggiorna last activation
+std::string Tropical::activate() override {
+    if(!active) {
+        active = true;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è attivato.";
+    }
+    return "";
 }
 
-void Tropical::deactivate() {
-    active = false;
-    //disattiva l'impianto
+std::string Tropical::deactivate() override {
+    if(active) {
+        active = false;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è disattivato.";
+    }
+    return "";
 }
 
 std::string Tropical::get_all_infos() {

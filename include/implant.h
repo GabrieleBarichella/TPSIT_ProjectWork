@@ -19,13 +19,15 @@ public:
 
     virtual ~Implant() = default;
 
-    virtual void activate() = 0;
-    virtual void deactivate() = 0;
+    virtual std::string activate() = 0;
+    virtual std::string deactivate() = 0;
     virtual std::string get_all_infos() = 0;
 
     void set_timer(const Clock& start, const Clock& stop);
     void set_timer(const Clock& start);
     void set_active(bool status);
+
+    void remove_timers();
 
     std::string get_plant_name() const;
     bool is_active() const;

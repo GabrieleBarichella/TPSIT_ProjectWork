@@ -51,40 +51,53 @@ void Greenhouse::set_time(Clock time) {
         clock++;
         for(int i = 0; i < implants.size(); i++) {
             if(implants.at(i)->get_timer_start().get_total_time() == clock.get_total_time()) {
-                implants.at(i)->activate();
+                std::string activation_result = implants.at(i)->activate();
+                if(activation_result.empty()) logMessage(clock, activation_result, 0);
             }
             else if(implants.at(i)->is_automatic() && implants.at(i)->get_timer_stop().get_total_time() == clock.get_total_time()) {
-                implants.at(i)->deactivate();
+                std::string deactivation_result = implants.at(i)->deactivate();
+                if(deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
             }
         }
     }
+    logMessage(clock, "L'orario attuale è " + clock.tostring(), 0);
 };
 
 void Greenhouse::reset_time() {
-
+    clock.set_total_time(0);
+    for(int i = 0; i < implants.size(); i++) {
+        std::string deactivation_result = implants.at(i)->deactivate();
+        if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
+        implants.at(i)->remove_timers();
+    }
 };
 
 void Greenhouse::reset_timers() {
-
+    for(int i = 0; i < implants.size(); i++)
+        implants.at(i)->remove_timers();
 };
 
 void Greenhouse::reset_all() {
-
+    clock.set_total_time(0);
+    for(int i = 0; i < implants.size(); i++) {
+        std::string deactivation_result = implants.at(i)->deactivate();
+        if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
+        implants.at(i)->remove_timers();
+        //temperatura a 28 per i mediterranei
+    }
 };
 
 void Greenhouse::remove_timer(std::string name) {
     for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name) return;
-            //rimozione del timer (set timer -1)
+        if(implants.at(i)->get_plant_name() == name)
+            implants.at(i)->remove_timers();
 }
 
 Clock Greenhouse::get_clock() {
     return clock;
 }
 
-/////////////////////////////////////////////////////////////
-
-void Greenhouse::logMessage(const Clock &time, const std::string &message, const int &errorLevel) {
+void Greenhouse::logMessage(const Clock &time, const std::string &message, const int& errorLevel) {
     if (errorLevel == 0)
         std::cout << "[" << time.tostring() << "]\t" << message << std::endl;
     else if (errorLevel == 1)
@@ -132,7 +145,6 @@ std::vector<std::string> Greenhouse::commandParser(const std::string &command) {
 
     return tokens;
 }
-
 
 void Greenhouse::processCommand(const std::string &command) {
     logMessage(clock, "L'orario attuale è " + clock.tostring(), 0);

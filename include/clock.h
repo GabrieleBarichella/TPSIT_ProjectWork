@@ -18,6 +18,7 @@ public:
     Clock operator++(int);
 
     Clock();
+    Clock(std::string time);
 };
 
 #endif

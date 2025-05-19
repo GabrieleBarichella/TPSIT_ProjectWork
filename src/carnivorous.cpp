@@ -5,14 +5,22 @@ Carnivorous::Carnivorous(const std::string& name) : Implant(name) {
     automatic = true;
 }
 
-void Carnivorous::activate() {
-    active = true;
-    //aggiorna last activation
+std::string Carnivorous::activate() override {
+    if(!active) {
+        active = true;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è attivato.";
+    }
+    return "";
 }
 
-void Carnivorous::deactivate() {
-    active = false;
-    //disattiva l'impianto
+std::string Carnivorous::deactivate() override {
+    if(active) {
+        active = false;
+        //last_activation =
+        return "L'impianto " + plant_name + " si è disattivato.";
+    }
+    return "";
 }
 
 std::string Carnivorous::get_all_infos() {
