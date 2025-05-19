@@ -1,27 +1,27 @@
 #include "../include/greenhouse.h"
 #include <iostream>
 
-void Greenhouse::add_implant(Implant* implant) {
-    implants.push_back(implant);
+void Greenhouse::add_implant(std::unique_ptr<Implant> implant) {
+    implants.push_back(std::move(implant));
 };
 
-void Greenhouse::remove_implant(Implant* implant) {
+void Greenhouse::remove_implant(std::unique_ptr<Implant> implant) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i) == implant)
             implants.erase(implants.begin() + i);
-};
+}; //la rimozione non funziona per qualche motivo
 
 void Greenhouse::set_implant_on(std::string name) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i)->get_plant_name() == name)
             implants.at(i)->set_active(true);
-};
+}; //probabilmente da rivedere
 
 void Greenhouse::set_implant_off(std::string name) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i)->get_plant_name() == name)
             implants.at(i)->set_active(false);
-};
+}; //probabilmente da rivedere
 
 void Greenhouse::set_implant_timers(std::string name, Clock start, Clock stop) {
     for(int i = 0; i < implants.size(); i++)
@@ -33,7 +33,7 @@ void Greenhouse::set_implant_timers(std::string name, Clock start) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i)->get_plant_name() == name)
             implants.at(i)->set_timer(start);
-}
+} //potrebbe dare problemi la macnanza di timer finale
 
 void Greenhouse::show(std::string name) {
     for(int i = 0; i < implants.size(); i++)
@@ -47,21 +47,21 @@ void Greenhouse::show() {
 };
 
 void Greenhouse::set_time(Clock time) {
-    while(clock.get_total_time() <= time.get_total_time()) {
+    while(clock.get_total_time() < time.get_total_time()) {
         clock++;
         for(int i = 0; i < implants.size(); i++) {
             if(implants.at(i)->get_timer_start().get_total_time() == clock.get_total_time()) {
                 std::string activation_result = implants.at(i)->activate();
-                if(activation_result.empty()) logMessage(clock, activation_result, 0);
+                if(!activation_result.empty()) logMessage(clock, activation_result, 0);
             }
             else if(implants.at(i)->is_automatic() && implants.at(i)->get_timer_stop().get_total_time() == clock.get_total_time()) {
                 std::string deactivation_result = implants.at(i)->deactivate();
-                if(deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
+                if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
             }
         }
     }
     logMessage(clock, "L'orario attuale è " + clock.tostring(), 0);
-};
+}; //potenzialmente funzionante, da gestire temperatura per mediterranee
 
 void Greenhouse::reset_time() {
     clock.set_total_time(0);
@@ -70,12 +70,12 @@ void Greenhouse::reset_time() {
         if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
         implants.at(i)->remove_timers();
     }
-};
+}; //non ho idea se sia giusto
 
 void Greenhouse::reset_timers() {
     for(int i = 0; i < implants.size(); i++)
         implants.at(i)->remove_timers();
-};
+}; //non ho idea se sia giusto
 
 void Greenhouse::reset_all() {
     clock.set_total_time(0);
@@ -85,13 +85,13 @@ void Greenhouse::reset_all() {
         implants.at(i)->remove_timers();
         //temperatura a 28 per i mediterranei
     }
-};
+}; //non ho idea se sia giusto
 
 void Greenhouse::remove_timer(std::string name) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i)->get_plant_name() == name)
             implants.at(i)->remove_timers();
-}
+} //non ho idea se sia giusto
 
 Clock Greenhouse::get_clock() {
     return clock;
@@ -147,7 +147,7 @@ std::vector<std::string> Greenhouse::commandParser(const std::string &command) {
 }
 
 void Greenhouse::processCommand(const std::string &command) {
-    logMessage(clock, "L'orario attuale è " + clock.tostring(), 0);
+    //logMessage con orario corrente
     std::vector<std::string> tokens = commandParser(command);
 
     if (tokens.empty()) {
@@ -225,4 +225,4 @@ void Greenhouse::processCommand(const std::string &command) {
     } else {
         throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
     }
-}
+} //da decidere se lasciare la notifica dell'orario corrente

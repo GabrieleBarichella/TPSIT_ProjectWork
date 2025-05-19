@@ -31,7 +31,7 @@ int Clock::get_minute() const {
 }
 
 int Clock::get_total_time() const {
-    return total_time;
+    return hour * 60 + minute;
 }
 
 void Clock::set_hour(int h) {
@@ -46,12 +46,12 @@ void Clock::set_total_time(int t) {
     total_time = t;
     hour = total_time / 60;
     minute = total_time % 60;
-}
+} //da capire se serve idk
 
 std::string Clock::tostring() const {
-    std::string hour_string = hour < 10 ? "0" + std::to_string(hour) : std::to_string(hour);
-    std::string minute_string = minute < 10 ? "0" + std::to_string(minute) : std::to_string(minute);
-    return std::to_string(hour) + ":" + std::to_string(minute);
+    std::string hour_string = (hour < 10 ? "0" : "") + std::to_string(hour);
+    std::string minute_string = (minute < 10 ? "0" : "") + std::to_string(minute);
+    return hour_string + ":" + minute_string;
 }
 
 Clock Clock::operator++(int) {

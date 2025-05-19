@@ -1,6 +1,7 @@
 #ifndef GREENHOUSE_H
 #define GREENHOUSE_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -16,10 +17,10 @@
 class Greenhouse {
 private:
     Clock clock;
-    std::vector<Implant*> implants;
+    std::vector<std::unique_ptr<Implant>> implants;
 public:
-    void add_implant(Implant* implant);
-    void remove_implant(Implant* implant);
+    void add_implant(std::unique_ptr<Implant> implant);
+    void remove_implant(std::unique_ptr<Implant> implant);
 
     void set_implant_on(std::string name);
     void set_implant_off(std::string name);
