@@ -20,7 +20,6 @@ private:
     std::vector<std::unique_ptr<Implant>> implants;
 public:
     void add_implant(std::unique_ptr<Implant> implant);
-    void remove_implant(std::unique_ptr<Implant> implant);
 
     void set_implant_on(std::string name);
     void set_implant_off(std::string name);

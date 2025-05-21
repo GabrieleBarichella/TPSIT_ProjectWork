@@ -7,7 +7,7 @@ class Tropical : public Implant {
 public:
     Tropical(const std::string &name);
 
-    std::string activate() override;
+    std::string activate(Clock c) override;
     std::string deactivate() override;
     std::string get_all_infos() override;
 };

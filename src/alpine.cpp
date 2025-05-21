@@ -5,14 +5,14 @@ Alpine::Alpine(const std::string& name) : Implant(name) {
     automatic = true;
 }
 
-std::string Alpine::activate() {
+std::string Alpine::activate(Clock c) {
     if(!active) {
         active = true;
-        //last_activation =
+        last_activation = c;
         return "L'impianto " + plant_name + " si è attivato.";
     }
     return "";
-} //da gestire il Last Activation
+}
 
 std::string Alpine::deactivate() {
     if(active) {
@@ -20,7 +20,7 @@ std::string Alpine::deactivate() {
         return "L'impianto " + plant_name + " si è disattivato.";
     }
     return "";
-} //da gestire il Last Activation
+}
 
 std::string Alpine::get_all_infos() {
     return "Type: Alpine - Name: " + plant_name + " - Active: " + (active ? "Yes" : "No") + " -  Automatic: Yes";

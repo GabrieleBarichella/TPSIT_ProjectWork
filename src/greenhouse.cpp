@@ -5,12 +5,6 @@ void Greenhouse::add_implant(std::unique_ptr<Implant> implant) {
     implants.push_back(std::move(implant));
 };
 
-void Greenhouse::remove_implant(std::unique_ptr<Implant> implant) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i) == implant)
-            implants.erase(implants.begin() + i);
-}; //la rimozione non funziona per qualche motivo
-
 void Greenhouse::set_implant_on(std::string name) {
     for(int i = 0; i < implants.size(); i++)
         if(implants.at(i)->get_plant_name() == name)
@@ -147,31 +141,34 @@ std::vector<std::string> Greenhouse::commandParser(const std::string &command) {
 }
 
 void Greenhouse::processCommand(const std::string &command) {
-    //logMessage con orario corrente
     std::vector<std::string> tokens = commandParser(command);
 
     if (tokens.empty()) {
-        throw std::invalid_argument("Errore: comando vuoto.");
+        logMessage(clock, "Errore: comando vuoto.", 1);
+        return;
     }
 
     const std::string &action = tokens[0];
 
     if (action == "set") {
         if (tokens.size() < 2) {
-            throw std::invalid_argument("Errore: comando 'set' incompleto.");
+            logMessage(clock,"Errore: comando 'set' incompleto.",1);
+            return;
         }
 
         const std::string &deviceName = tokens[1];
 
         if (deviceName == "time") {
             if (tokens.size() != 3) {
-                throw std::invalid_argument("Errore: formato per 'set time' non valido. Usa: set time HH:MM");
+                logMessage(clock, "Errore: formato per 'set time' non valido. Usa: set time HH:MM", 1);
+                return;
             }
             Clock time{tokens[2]};
             set_time(time);
         } else {
             if (tokens.size() < 3) {
-                throw std::invalid_argument("Errore: comando 'set' incompleto per dispositivo.");
+                logMessage(clock, "Errore: comando 'set' incompleto per dispositivo.", 1);
+                return;
             }
 
             const std::string &operation = tokens[2];
@@ -194,7 +191,8 @@ void Greenhouse::processCommand(const std::string &command) {
 
     } else if (action == "rm") {
         if (tokens.size() != 2) {
-            throw std::invalid_argument("Errore: comando 'rm' non valido. Usa: rm ${DEVICENAME}");
+            logMessage(clock,"Errore: comando 'rm' non valido. Usa: rm ${DEVICENAME}",1);
+            return;
         }
         remove_timer(tokens[1]);
     } else if (action == "show") {
@@ -203,12 +201,14 @@ void Greenhouse::processCommand(const std::string &command) {
         } else if (tokens.size() == 2) {
             show(tokens[1]);
         } else {
-            throw std::invalid_argument("Errore: comando 'show' non valido. Usa: show oppure show ${DEVICENAME}");
+            logMessage(clock,"Errore: comando 'show' non valido. Usa: show oppure show ${DEVICENAME}",1);
+            return;
         }
 
     } else if (action == "reset") {
         if (tokens.size() != 2) {
-            throw std::invalid_argument("Errore: comando 'reset' non valido.");
+            logMessage(clock,"Errore: comando 'reset' non valido.",1);
+            return;
         }
 
         const std::string &resetType = tokens[1];
@@ -219,10 +219,12 @@ void Greenhouse::processCommand(const std::string &command) {
         } else if (resetType == "all") {
             reset_all();
         } else {
-            throw std::invalid_argument(
-                    "Errore: opzione 'reset' non valida. Usa: reset time | reset timers | reset all");
+            logMessage(clock, "Errore: opzione 'reset' non valida. Usa: reset time | reset timers | reset all", 1);
+            return;
         }
     } else {
-        throw std::invalid_argument("Errore: comando '" + action + "' non riconosciuto.");
+        logMessage(clock, "Errore: comando '" + action + "' non riconosciuto.", 1);
+        return;
     }
-} //da decidere se lasciare la notifica dell'orario corrente
+    logMessage(clock, "L'orario corrente è " + clock.tostring(), 0);
+}

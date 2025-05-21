@@ -19,7 +19,7 @@ public:
 
     virtual ~Implant() = default;
 
-    virtual std::string activate() = 0;
+    virtual std::string activate(Clock c) = 0;
     virtual std::string deactivate() = 0;
     virtual std::string get_all_infos() = 0;
 
