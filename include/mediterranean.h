@@ -11,6 +11,7 @@ public:
 
     std::string activate(Clock c) override;
     std::string deactivate() override;
+    std::string adaptive_behaviour(Clock c) override;
     std::string get_all_infos() override;
 };
 

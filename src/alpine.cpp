@@ -2,7 +2,7 @@
 
 Alpine::Alpine(const std::string& name) : Implant(name) {
     active = false;
-    automatic = true;
+    automatic = 1;
 }
 
 std::string Alpine::activate(Clock c) {

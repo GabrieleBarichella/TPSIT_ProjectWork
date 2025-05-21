@@ -45,17 +45,21 @@ void Greenhouse::set_time(Clock time) {
         clock++;
         for(int i = 0; i < implants.size(); i++) {
             if(implants.at(i)->get_timer_start().get_total_time() == clock.get_total_time()) {
-                std::string activation_result = implants.at(i)->activate();
+                std::string activation_result = implants.at(i)->activate(clock);
                 if(!activation_result.empty()) logMessage(clock, activation_result, 0);
             }
-            else if(implants.at(i)->is_automatic() && implants.at(i)->get_timer_stop().get_total_time() == clock.get_total_time()) {
+            else if(implants.at(i)->is_automatic() == 1 && implants.at(i)->get_timer_stop().get_total_time() == clock.get_total_time()) {
                 std::string deactivation_result = implants.at(i)->deactivate();
                 if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
             }
+
+            if(implants.at(i)->is_automatic() == 2) {
+                std::string adaptive_result = implants.at(i)->adaptive_behaviour(clock);
+                if(!adaptive_result.empty()) logMessage(clock, adaptive_result, 0);
+            }
         }
     }
-    logMessage(clock, "L'orario attuale è " + clock.tostring(), 0);
-}; //potenzialmente funzionante, da gestire temperatura per mediterranee
+};
 
 void Greenhouse::reset_time() {
     clock.set_total_time(0);
@@ -226,5 +230,5 @@ void Greenhouse::processCommand(const std::string &command) {
         logMessage(clock, "Errore: comando '" + action + "' non riconosciuto.", 1);
         return;
     }
-    logMessage(clock, "L'orario corrente è " + clock.tostring(), 0);
+    logMessage(clock, "L'orario corrente e' " + clock.tostring(), 0);
 }

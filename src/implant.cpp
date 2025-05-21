@@ -28,7 +28,7 @@ bool Implant::is_active() const {
     return active;
 };
 
-bool Implant::is_automatic() const {
+int Implant::is_automatic() const {
     return automatic;
 };
 
@@ -43,3 +43,8 @@ Clock Implant::get_timer_start() {
 Clock Implant::get_timer_stop() {
     return timer_stop;
 };
+
+std::string Implant::adaptive_behaviour(Clock c) {
+    return "";
+}
+

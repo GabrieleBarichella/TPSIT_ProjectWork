@@ -2,7 +2,7 @@
 
 Desertic::Desertic(const std::string& name) : Implant(name) {
     active = false;
-    automatic = false;
+    automatic = 0;
 }
 
 std::string Desertic::activate(Clock c) {

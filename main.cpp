@@ -10,6 +10,7 @@ void Simulation();
 Greenhouse greenhouse;
 
 int main() {
+    std::srand(time(nullptr));
     PrintMenu();
     CreationSystem();
     Simulation();

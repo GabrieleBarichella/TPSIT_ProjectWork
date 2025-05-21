@@ -2,7 +2,7 @@
 
 Tropical::Tropical(const std::string& name) : Implant(name) {
     active = false;
-    automatic = true;
+    automatic = 1;
 }
 
 std::string Tropical::activate(Clock c) {
