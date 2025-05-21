@@ -1,97 +1,133 @@
 #include "../include/greenhouse.h"
+
 #include <iostream>
+#include <sstream>
 
 void Greenhouse::add_implant(std::unique_ptr<Implant> implant) {
     implants.push_back(std::move(implant));
-};
+}
 
-void Greenhouse::set_implant_on(std::string name) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            implants.at(i)->set_active(true);
-}; //probabilmente da rivedere
+void Greenhouse::set_implant_on(const std::string& name) {
+    for(const auto & implant : implants) {
+        if(implant->get_plant_name() == name) {
+            if(implant->get_implant_type() != 2) {
+                std::string activation_result = implant->activate(clock);
+                if(!activation_result.empty()) logMessage(clock, activation_result, 0);
+                else logMessage(clock, "L'impianto e' gia' acceso.", 0);
+            }
+            else logMessage(clock, "Non puoi accendere manualmente questo tipo di impianto.",1);
+            return;
+        }
+    }
+    logMessage(clock, "Impianto richiesto non trovato.", 1);
+}
 
-void Greenhouse::set_implant_off(std::string name) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            implants.at(i)->set_active(false);
-}; //probabilmente da rivedere
+void Greenhouse::set_implant_off(const std::string& name) {
+    for(const auto & implant : implants) {
+        if(implant->get_plant_name() == name) {
+            if(implant->get_implant_type() != 2) {
+                std::string deactivation_result = implant->deactivate();
+                if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
+                else logMessage(clock, "L'impianto e' gia' spento.", 0);
+            }
+            else logMessage(clock, "Non puoi disattivare manualmente questo tipo di impianto.",1);
+            return;
+        }
+    }
+    logMessage(clock, "Impianto richiesto non trovato.", 1);
+}
 
-void Greenhouse::set_implant_timers(std::string name, Clock start, Clock stop) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            implants.at(i)->set_timer(start,stop);
-};
+void Greenhouse::set_implant_timers(const std::string& name, Clock start, Clock stop) {
+    for(const auto & implant : implants)
+        if(implant->get_plant_name() == name) {
+            if(implant->get_implant_type() == 1) {
+                implant->set_timer(start,stop);
+                logMessage(clock, "Operazione riuscita.", 0);
+            }
+            else logMessage(clock, "Non puoi inserire un sistema automatico in questo tipo di impianto.", 1);
+            return;
+        }
+    logMessage(clock, "Impianto richiesto non trovato.", 1);
+}
 
-void Greenhouse::set_implant_timers(std::string name, Clock start) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            implants.at(i)->set_timer(start);
-} //potrebbe dare problemi la macnanza di timer finale
+void Greenhouse::set_implant_timers(const std::string& name, Clock start) {
+    for(const auto & implant : implants)
+        if(implant->get_plant_name() == name) {
+            if(implant->get_implant_type() != 2) {
+                implant->set_timer(start);
+                logMessage(clock, "Operazione riuscita.", 0);
+                return;
+            }
+            logMessage(clock, "Non puoi settare un timer per questo tipo di impianto.", 1);
+        }
+    logMessage(clock, "Impianto richiesto non trovato.", 1);
+}
 
-void Greenhouse::show(std::string name) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            logMessage(clock, implants.at(i)->get_all_infos(), 0);
-};
+void Greenhouse::show(const std::string& name) {
+    for(const auto & implant : implants)
+        if(implant->get_plant_name() == name)
+            logMessage(clock, implant->get_all_infos(), 0);
+}
 
 void Greenhouse::show() {
-    for(int i = 0; i < implants.size(); i++)
-        logMessage(clock, implants.at(i)->get_all_infos(), 0);
-};
+    for(const auto & implant : implants)
+        logMessage(clock, implant->get_all_infos(), 0);
+}
 
 void Greenhouse::set_time(Clock time) {
     while(clock.get_total_time() < time.get_total_time()) {
         clock++;
-        for(int i = 0; i < implants.size(); i++) {
-            if(implants.at(i)->get_timer_start().get_total_time() == clock.get_total_time()) {
-                std::string activation_result = implants.at(i)->activate(clock);
+        for(const auto & implant : implants) {
+            if(implant->get_timer_start().get_total_time() == clock.get_total_time()) {
+                std::string activation_result = implant->activate(clock);
                 if(!activation_result.empty()) logMessage(clock, activation_result, 0);
             }
-            else if(implants.at(i)->is_automatic() == 1 && implants.at(i)->get_timer_stop().get_total_time() == clock.get_total_time()) {
-                std::string deactivation_result = implants.at(i)->deactivate();
+            else if(implant->get_implant_type() == 1 && implant->get_timer_stop().get_total_time() == clock.get_total_time()) {
+                std::string deactivation_result = implant->deactivate();
                 if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
             }
 
-            if(implants.at(i)->is_automatic() == 2) {
-                std::string adaptive_result = implants.at(i)->adaptive_behaviour(clock);
+            if(implant->get_implant_type() == 2) {
+                std::string adaptive_result = implant->adaptive_behaviour(clock);
                 if(!adaptive_result.empty()) logMessage(clock, adaptive_result, 0);
             }
         }
     }
-};
+}
 
 void Greenhouse::reset_time() {
     clock.set_total_time(0);
-    for(int i = 0; i < implants.size(); i++) {
-        std::string deactivation_result = implants.at(i)->deactivate();
-        if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
-        implants.at(i)->remove_timers();
+    for(const auto & implant : implants) {
+        if(implant->get_implant_type() != 2) {
+            std::string deactivation_result = implant->deactivate();
+            if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
+            implant->remove_timers();
+        }
     }
-}; //non ho idea se sia giusto
+    logMessage(clock, "Impianti spenti (tranne adattivi), timer rimossi.", 0);
+}
 
 void Greenhouse::reset_timers() {
-    for(int i = 0; i < implants.size(); i++)
-        implants.at(i)->remove_timers();
-}; //non ho idea se sia giusto
+    for(const auto & implant : implants)
+        implant->remove_timers();
+    logMessage(clock, "Timer rimossi.", 0);
+}
 
 void Greenhouse::reset_all() {
-    clock.set_total_time(0);
-    for(int i = 0; i < implants.size(); i++) {
-        std::string deactivation_result = implants.at(i)->deactivate();
-        if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
-        implants.at(i)->remove_timers();
-        //temperatura a 28 per i mediterranei
-    }
-}; //non ho idea se sia giusto
+    reset_time();
+}
 
-void Greenhouse::remove_timer(std::string name) {
-    for(int i = 0; i < implants.size(); i++)
-        if(implants.at(i)->get_plant_name() == name)
-            implants.at(i)->remove_timers();
-} //non ho idea se sia giusto
+void Greenhouse::remove_timer(const std::string& name) {
+    for(const auto & implant : implants)
+        if(implant->get_plant_name() == name) {
+            implant->remove_timers();
+            logMessage(clock, "Timer rimosso.", 0);
+            return;
+        }
+    logMessage(clock, "Impianto richiesto non trovato.", 1);
+}
 
-Clock Greenhouse::get_clock() {
+Clock Greenhouse::get_clock() const {
     return clock;
 }
 

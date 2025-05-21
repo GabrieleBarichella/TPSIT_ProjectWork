@@ -5,10 +5,11 @@
 
 class Carnivorous : public Implant {
 public:
-    Carnivorous(const std::string &name);
+    explicit Carnivorous(const std::string &name);
 
-    std::string activate(Clock c) override;
+    std::string activate(const Clock& c) override;
     std::string deactivate() override;
+    std::string adaptive_behaviour(const Clock& c) override;
     std::string get_all_infos() override;
 };
 

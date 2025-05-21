@@ -2,16 +2,16 @@
 
 Mediterranean::Mediterranean(const std::string& name) : Implant(name) {
     active = false;
-    automatic = 2;
+    implant_type = 2;
     temperature = 28.00;
 }
 
-std::string Mediterranean::activate(Clock c) {
+std::string Mediterranean::activate(const Clock& c) {
     std::string output = "";
     if(!active) {
         active = true;
         last_activation = c;
-        output += "L'impianto " + plant_name + " si è attivato.";
+        output += "L'impianto " + plant_name + " si e' attivato.";
     }
     return output;
 }
@@ -19,12 +19,12 @@ std::string Mediterranean::activate(Clock c) {
 std::string Mediterranean::deactivate() {
     if(active) {
         active = false;
-        return "L'impianto " + plant_name + " si è disattivato.";
+        return "L'impianto " + plant_name + " si e' disattivato.";
     }
     return "";
 }
 
-std::string Mediterranean::adaptive_behaviour(Clock c) {
+std::string Mediterranean::adaptive_behaviour(const Clock& c) {
     if(!active) {
         if(temperature >= 25) temperature -= 0.01 + (std::rand() / (double)RAND_MAX) * (0.05 - 0.01);
         else return activate(c);
@@ -37,5 +37,5 @@ std::string Mediterranean::adaptive_behaviour(Clock c) {
 }
 
 std::string Mediterranean::get_all_infos() {
-    return "Type: Carnivorous - Name: " + plant_name + " - Active: " + (active ? "Yes" : "No") + " -  Automatic: Adaptive";
+    return "Type: Mediterranean, Name: " + plant_name + ", Active: " + (active ? "Yes" : "No") + ", Automatic: Adaptive";
 }

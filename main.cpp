@@ -71,7 +71,7 @@ void CreationSystem() {
                 greenhouse.logMessage(greenhouse.get_clock(),"Scelta non valida. Selezionare un'opzione disponibile.", 1);
         }
     } while (selection != 0);
-} //da sistemare l'interfaccia utente
+}
 
 void Simulation() {
     bool going = true;

@@ -7,11 +7,11 @@ class Mediterranean : public Implant {
 private:
     double temperature;
 public:
-    Mediterranean(const std::string &name);
+    explicit Mediterranean(const std::string &name);
 
-    std::string activate(Clock c) override;
+    std::string activate(const Clock& c) override;
     std::string deactivate() override;
-    std::string adaptive_behaviour(Clock c) override;
+    std::string adaptive_behaviour(const Clock& c) override;
     std::string get_all_infos() override;
 };
 

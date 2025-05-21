@@ -1,12 +1,9 @@
 #include "../include/clock.h"
 #include <stdexcept>
 
-Clock::Clock() {
-    hour = 0;
-    minute = 0;
-}
+Clock::Clock() : hour{0}, minute{0} {}
 
-Clock::Clock(std::string time) {
+Clock::Clock(const std::string &time) {
     if (time.length() != 5 || time[2] != ':') {
         throw std::invalid_argument("Formato orario non valido. Deve essere HH:MM");
     }
@@ -43,10 +40,9 @@ void Clock::set_minute(int m) {
 }
 
 void Clock::set_total_time(int t) {
-    total_time = t;
-    hour = total_time / 60;
-    minute = total_time % 60;
-} //da capire se serve idk
+    hour = t / 60;
+    minute = t % 60;
+}
 
 std::string Clock::tostring() const {
     std::string hour_string = (hour < 10 ? "0" : "") + std::to_string(hour);
@@ -59,7 +55,6 @@ Clock Clock::operator++(int) {
     else if(hour < 23) { hour++; minute = 0; }
     else { hour = 0; minute = 0; }
 
-    total_time++;
     return *this;
 }
 

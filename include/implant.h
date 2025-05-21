@@ -8,20 +8,20 @@ class Implant {
 protected:
     std::string plant_name;
     bool active;
-    int automatic;
+    int implant_type;
 
     Clock last_activation;
     Clock timer_start;
     Clock timer_stop;
 
 public:
-    Implant(const std::string& name);
+    explicit Implant(const std::string& name);
 
     virtual ~Implant() = default;
 
-    virtual std::string activate(Clock c) = 0;
+    virtual std::string activate(const Clock& c) = 0;
     virtual std::string deactivate() = 0;
-    virtual std::string adaptive_behaviour(Clock c) = 0;
+    virtual std::string adaptive_behaviour(const Clock& c) = 0;
     virtual std::string get_all_infos() = 0;
 
     void set_timer(const Clock& start, const Clock& stop);
@@ -30,13 +30,14 @@ public:
 
     void remove_timers();
 
-    std::string get_plant_name() const;
-    bool is_active() const;
-    int is_automatic() const;
+    [[nodiscard]] std::string get_plant_name() const;
+    [[nodiscard]] bool is_active() const;
+    [[nodiscard]] int get_implant_type() const;
 
-    Clock get_last_activation();
-    Clock get_timer_start();
-    Clock get_timer_stop();
+    [[nodiscard]] Clock get_last_activation() const;
+    [[nodiscard]] Clock get_timer_start() const;
+    [[nodiscard]] Clock get_timer_stop() const;
+
 };
 
 #endif
