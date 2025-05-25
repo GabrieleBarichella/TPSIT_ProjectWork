@@ -7,6 +7,8 @@ private:
     int hour;
     int minute;
 public:
+    //consiglio di clang-tidy: nodiscard così il valore ottenuto non
+    //può venire ignorato alla chiamata del metodo
     [[nodiscard]] int get_hour() const;
     [[nodiscard]] int get_minute() const;
     [[nodiscard]] int get_total_time() const;
@@ -18,6 +20,7 @@ public:
 
     Clock();
     explicit Clock(const std::string &time);
+    //explicit per prevenire conversioni implicite
 };
 
 #endif

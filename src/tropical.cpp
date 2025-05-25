@@ -1,10 +1,12 @@
 #include "../include/tropical.h"
 
+//costruttore
 Tropical::Tropical(const std::string& name) : Implant(name) {
     active = false;
     implant_type = 1;
 }
 
+//gestione attivazione con messaggio di conferma
 std::string Tropical::activate(const Clock& c) {
     if(!active) {
         active = true;
@@ -14,6 +16,7 @@ std::string Tropical::activate(const Clock& c) {
     return "";
 }
 
+//disattivazione con messaggio di conferma
 std::string Tropical::deactivate() {
     if(active) {
         active = false;
@@ -22,6 +25,7 @@ std::string Tropical::deactivate() {
     return "";
 }
 
+//ritorna informazioni principali
 std::string Tropical::get_all_infos() {
     return "Type: Tropical, Name: " + plant_name + ", Active: " + (active ? "Yes" : "No") + ", Automatic: Yes";
 }

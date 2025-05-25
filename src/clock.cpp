@@ -1,13 +1,16 @@
 #include "../include/clock.h"
 #include <stdexcept>
 
+//costruttore
 Clock::Clock() : hour{0}, minute{0} {}
 
+//costruttore che accetta una stringa per compatibilità con il codice di gestione dei comandi
 Clock::Clock(const std::string &time) {
     if (time.length() != 5 || time[2] != ':') {
         throw std::invalid_argument("Formato orario non valido. Deve essere HH:MM");
     }
 
+    //conversione dell'input
     int h = (time[0] - '0') * 10 + (time[1] - '0');
     int m = (time[3] - '0') * 10 + (time[4] - '0');
 
@@ -44,6 +47,7 @@ void Clock::set_total_time(int t) {
     minute = t % 60;
 }
 
+//ritorna una versione stringa dell'orario in formato hh:mm
 std::string Clock::tostring() const {
     std::string hour_string = (hour < 10 ? "0" : "") + std::to_string(hour);
     std::string minute_string = (minute < 10 ? "0" : "") + std::to_string(minute);

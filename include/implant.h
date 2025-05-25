@@ -8,6 +8,7 @@ class Implant {
 protected:
     std::string plant_name;
     bool active;
+    //0 = manuale, 1 = automatico, 2 = adattivo
     int implant_type;
 
     Clock last_activation;
@@ -15,8 +16,10 @@ protected:
     Clock timer_stop;
 
 public:
+    //explicit per evitare conversioni implicite
     explicit Implant(const std::string& name);
 
+    //distruttore virtuale
     virtual ~Implant() = default;
 
     virtual std::string activate(const Clock& c) = 0;
@@ -30,6 +33,7 @@ public:
 
     void remove_timers();
 
+    //clang-tidy: nodiscard per evitare che venga ignorato ciò che viene restituito dal metodo
     [[nodiscard]] std::string get_plant_name() const;
     [[nodiscard]] bool is_active() const;
     [[nodiscard]] int get_implant_type() const;

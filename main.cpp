@@ -10,7 +10,7 @@ void Simulation();
 Greenhouse greenhouse;
 
 int main() {
-    std::srand(time(nullptr));
+    std::srand(time(nullptr)); //per i random in Mediterranean (per temperatura)
     PrintMenu();
     CreationSystem();
     Simulation();

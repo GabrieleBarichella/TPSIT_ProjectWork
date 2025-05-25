@@ -5,12 +5,17 @@
 
 void Greenhouse::add_implant(std::unique_ptr<Implant> implant) {
     implants.push_back(std::move(implant));
+    //trasferire l’impianto nel vector senza copiarlo. trasferisce "ownership"
+    //"ownership": responsabilità di gestire la vita di un oggetto dinamico
 }
 
 void Greenhouse::set_implant_on(const std::string& name) {
+    //auto: deduce automaticamente il tipo unique_ptr<Implant>
+    //&: significa che non stai facendo una copia ma leggendo un riferimento
+    //const: garantisce che non puoi modificare l’oggetto puntato all’interno del ciclo
     for(const auto & implant : implants) {
         if(implant->get_plant_name() == name) {
-            if(implant->get_implant_type() != 2) {
+            if(implant->get_implant_type() != 2) { //se non è adattivo
                 std::string activation_result = implant->activate(clock);
                 if(!activation_result.empty()) logMessage(clock, activation_result, 0);
                 else logMessage(clock, "L'impianto e' gia' acceso.", 0);
@@ -75,8 +80,10 @@ void Greenhouse::show() {
 }
 
 void Greenhouse::set_time(Clock time) {
+    //scorre in avanti il timer finchè non raggiunge il tempo richiesto
     while(clock.get_total_time() < time.get_total_time()) {
         clock++;
+        //per ogni minuto trascorso verifica che ogni tipo di impianto faccia quello che deve
         for(const auto & implant : implants) {
             if(implant->get_timer_start().get_total_time() == clock.get_total_time()) {
                 std::string activation_result = implant->activate(clock);
@@ -87,6 +94,7 @@ void Greenhouse::set_time(Clock time) {
                 if(!deactivation_result.empty()) logMessage(clock, deactivation_result, 0);
             }
 
+            //gestione della temperatura per impianti adattivi
             if(implant->get_implant_type() == 2) {
                 std::string adaptive_result = implant->adaptive_behaviour(clock);
                 if(!adaptive_result.empty()) logMessage(clock, adaptive_result, 0);

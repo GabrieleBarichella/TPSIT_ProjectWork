@@ -1,10 +1,12 @@
 #include "../include/alpine.h"
 
+//costruttore
 Alpine::Alpine(const std::string& name) : Implant(name) {
     active = false;
     implant_type = 1;
 }
 
+//metodo per attivare l'impianto. restituisce un messaggio di conferma di attivazione
 std::string Alpine::activate(const Clock& c) {
     if(!active) {
         active = true;
@@ -14,6 +16,7 @@ std::string Alpine::activate(const Clock& c) {
     return "";
 }
 
+//metodo per disattivare l'impianto. restituisce un messaggio di conferma di disattivazione
 std::string Alpine::deactivate() {
     if(active) {
         active = false;
@@ -22,6 +25,7 @@ std::string Alpine::deactivate() {
     return "";
 }
 
+//restituisce le informazioni principali sull'impianto
 std::string Alpine::get_all_infos() {
     return "Type: Alpine, Name: " + plant_name + ", Active: " + (active ? "Yes" : "No") + ", Automatic: Yes";
 }

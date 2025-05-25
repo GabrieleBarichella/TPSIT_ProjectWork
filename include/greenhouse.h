@@ -15,7 +15,9 @@
 class Greenhouse {
 private:
     Clock clock;
+    //vettore di puntatori Impianto per gestire tutti i tipi di impianti
     std::vector<std::unique_ptr<Implant>> implants;
+    //unique ptr sicuro perchè dealloca automaticamente l’oggetto quando non serve più
 public:
     void add_implant(std::unique_ptr<Implant> implant);
 
